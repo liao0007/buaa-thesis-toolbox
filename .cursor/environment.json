@@ -1,0 +1,4 @@
+{
+  "name": "buaa-skills",
+  "install": "bash .cursor/install.sh"
+}

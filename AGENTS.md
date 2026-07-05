@@ -26,8 +26,8 @@ build. Inspect/render the result with `poppler-utils` (`pdfinfo`, `pdftoppm`).
 - **Pandoc must be ≥ 3.2.** Ubuntu's apt Pandoc (3.1.3) crashes the
   `scripts/full-width-tables.lua` filter with `table expected, got pandoc Cell`
   (`pandoc.utils.stringify` only accepts a table `Cell` in newer Pandoc). The
-  update script installs the latest Pandoc `.deb` from GitHub when the present
-  version is too old; a matching version is baked into the VM snapshot.
+  environment setup (`.cursor/install.sh`, run via `.cursor/environment.json`)
+  installs the latest Pandoc `.deb` from GitHub when the present version is too old.
 - **Ghostscript is required.** The cover/degree-header art in `assets/*.eps` is
   converted from EPS by XeLaTeX via ghostscript. Without it the build dies with
   `xdvipdfmx:fatal: pdf_link_obj(): passed invalid object` partway through (looks
