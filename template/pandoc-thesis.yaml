@@ -1,0 +1,8 @@
+from: markdown+raw_tex+tex_math_dollars+pipe_tables
+to: pdf
+pdf-engine: xelatex
+citeproc: true
+top-level-division: chapter
+filters:
+  - scripts/full-width-tables.lua
+  - scripts/tikz.lua
