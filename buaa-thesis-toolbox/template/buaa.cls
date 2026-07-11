@@ -29,57 +29,39 @@
 \typeout{This is LaTeX template buaa. Version 3.1 (based on CTeX) 01-24-2022}
 
 %% 选项
+\newcommand{\buaa@defoption}[3]{\DeclareOption{#1}{\gdef\@#2{#3}}}
+
 %% 论文类型
-\DeclareOption{master}{\gdef\@thesis{master}}             % 学术硕士论文
-\DeclareOption{professional}{\gdef\@thesis{professional}} % 专业硕士论文
-\DeclareOption{doctor}{\gdef\@thesis{doctor}}             % 博士论文
-\DeclareOption{prodoctor}{\gdef\@thesis{prodoctor}}       % 专业博士论文
+\buaa@defoption{master}{thesis}{master}
+\buaa@defoption{professional}{thesis}{professional}
+\buaa@defoption{doctor}{thesis}{doctor}
+\buaa@defoption{prodoctor}{thesis}{prodoctor}
+\buaa@defoption{Master}{thesis}{master}
+\buaa@defoption{Professional}{thesis}{professional}
+\buaa@defoption{Doctor}{thesis}{doctor}
+\buaa@defoption{ProDoctor}{thesis}{prodoctor}
 \DeclareOption{thesis}{\ClassWarning{buaa}{%
   You have not specified the THESIS option. The word thesis should be replaced by one of the following thesis type: master(default), professional, doctor, prodoctor.
 }}
 
 %% 密级
-\DeclareOption{public}{\gdef\@permission{public}}             % 公开
-\DeclareOption{privacy}{\gdef\@permission{privacy}}           % 内部
-\DeclareOption{secret}{\gdef\@permission{secret3}}            % 秘密 = 秘密3年
-\DeclareOption{secret3}{\gdef\@permission{secret3}}           % 秘密3年
-\DeclareOption{secret5}{\gdef\@permission{secret5}}           % 秘密5年
-\DeclareOption{secret10}{\gdef\@permission{secret10}}         % 秘密10年
-\DeclareOption{secret*}{\gdef\@permission{secret*}}           % 秘密永久
-\DeclareOption{classified}{\gdef\@permission{classified5}}    % 机密 = 机密5年
-\DeclareOption{classified3}{\gdef\@permission{classified3}}   % 机密3年
-\DeclareOption{classified5}{\gdef\@permission{classified5}}   % 机密5年
-\DeclareOption{classified10}{\gdef\@permission{classified10}} % 机密10年
-\DeclareOption{classified*}{\gdef\@permission{classified*}}   % 机密永久
-\DeclareOption{topsecret}{\gdef\@permission{topsecret10}}     % 绝密 = 绝密10年
-\DeclareOption{topsecret3}{\gdef\@permission{topsecret3}}     % 绝密3年
-\DeclareOption{topsecret5}{\gdef\@permission{topsecret5}}     % 绝密5年
-\DeclareOption{topsecret10}{\gdef\@permission{topsecret10}}   % 绝密10年
-\DeclareOption{topsecret*}{\gdef\@permission{topsecret*}}     % 绝密永久
-\DeclareOption{permission}{\ClassWarning{buaa}{%
-  You have not specified the PERMISSION option. The word permission should be replaced by one of the following thesis type: public, privacy, secret, classified, topsecret.
-}}
-
-%% 打印设置
-\DeclareOption{oneside}{\gdef\@printtype{oneside}} % 单面打印
-\DeclareOption{twoside}{\gdef\@printtype{twoside}} % 双面打印
-\DeclareOption{printtype}{\ClassWarning{buaa}{%
-  You have not specified the PRINTTYPE option. The word printtype should be replaced by one of the following thesis type: oneside, twoside.
-}}
-
-%% 系统设置
-\DeclareOption{win}{\gdef\@ostype{win}}     % windows
-\DeclareOption{linux}{\gdef\@ostype{linux}} % linux
-\DeclareOption{max}{\gdef\@ostype{mac}}     % mac
-\DeclareOption{ostype}{\ClassWarning{buaa}{%
-  You have not specified the OSTYPE option. The word ostype should be replaced by one of the following thesis type: win, linux, mac.
-}}
-
-%% 适应首字母大写
-\DeclareOption{Master}{\gdef\@thesis{master}}
-\DeclareOption{Professional}{\gdef\@thesis{professional}}
-\DeclareOption{Doctor}{\gdef\@thesis{doctor}}
-\DeclareOption{ProDoctor}{\gdef\@thesis{prodoctor}}
+\DeclareOption{public}{\gdef\@permission{public}}
+\DeclareOption{privacy}{\gdef\@permission{privacy}}
+\DeclareOption{secret}{\gdef\@permission{secret3}}
+\DeclareOption{secret3}{\gdef\@permission{secret3}}
+\DeclareOption{secret5}{\gdef\@permission{secret5}}
+\DeclareOption{secret10}{\gdef\@permission{secret10}}
+\DeclareOption{secret*}{\gdef\@permission{secret*}}
+\DeclareOption{classified}{\gdef\@permission{classified5}}
+\DeclareOption{classified3}{\gdef\@permission{classified3}}
+\DeclareOption{classified5}{\gdef\@permission{classified5}}
+\DeclareOption{classified10}{\gdef\@permission{classified10}}
+\DeclareOption{classified*}{\gdef\@permission{classified*}}
+\DeclareOption{topsecret}{\gdef\@permission{topsecret10}}
+\DeclareOption{topsecret3}{\gdef\@permission{topsecret3}}
+\DeclareOption{topsecret5}{\gdef\@permission{topsecret5}}
+\DeclareOption{topsecret10}{\gdef\@permission{topsecret10}}
+\DeclareOption{topsecret*}{\gdef\@permission{topsecret*}}
 \DeclareOption{Public}{\gdef\@permission{public}}
 \DeclareOption{Privacy}{\gdef\@permission{privacy}}
 \DeclareOption{Secret}{\gdef\@permission{secret3}}
@@ -97,11 +79,29 @@
 \DeclareOption{TopSecret5}{\gdef\@permission{topsecret5}}
 \DeclareOption{TopSecret10}{\gdef\@permission{topsecret10}}
 \DeclareOption{TopSecret*}{\gdef\@permission{topsecret*}}
-\DeclareOption{Oneside}{\gdef\@printtype{oneside}}
-\DeclareOption{Twoside}{\gdef\@printtype{twoside}}
-\DeclareOption{Win}{\gdef\@ostype{win}}
-\DeclareOption{Linux}{\gdef\@ostype{linux}}
-\DeclareOption{Max}{\gdef\@ostype{mac}}
+\DeclareOption{permission}{\ClassWarning{buaa}{%
+  You have not specified the PERMISSION option. The word permission should be replaced by one of the following thesis type: public, privacy, secret, classified, topsecret.
+}}
+
+%% 打印设置
+\buaa@defoption{oneside}{printtype}{oneside}
+\buaa@defoption{twoside}{printtype}{twoside}
+\buaa@defoption{Oneside}{printtype}{oneside}
+\buaa@defoption{Twoside}{printtype}{twoside}
+\DeclareOption{printtype}{\ClassWarning{buaa}{%
+  You have not specified the PRINTTYPE option. The word printtype should be replaced by one of the following thesis type: oneside, twoside.
+}}
+
+%% 系统设置
+\buaa@defoption{win}{ostype}{win}
+\buaa@defoption{linux}{ostype}{linux}
+\buaa@defoption{max}{ostype}{mac}
+\buaa@defoption{Win}{ostype}{win}
+\buaa@defoption{Linux}{ostype}{linux}
+\buaa@defoption{Max}{ostype}{mac}
+\DeclareOption{ostype}{\ClassWarning{buaa}{%
+  You have not specified the OSTYPE option. The word ostype should be replaced by one of the following thesis type: win, linux, mac.
+}}
 
 %% 选项传递给ctexbook
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}}
@@ -115,7 +115,7 @@
 \setcounter{secnumdepth}{5}
 
 %% BUAAThesis字样及版本信息
-\usepackage{graphicx}
+\RequirePackage{graphicx}
 \def\BUAAThesisVer{v3.1 01-24-2022}
 \def\BUAAThesis{%
  B%
@@ -141,7 +141,6 @@
 \RequirePackage{fancyhdr}     % 设置页眉页脚
 \RequirePackage{setspace}     % 设置行间距
 \RequirePackage{float}        % 图片
-\RequirePackage{graphicx}     % 图片
 \RequirePackage{subfigure}    % 图片
 \RequirePackage{epstopdf}     % 图片
 \RequirePackage{array}        % 列举
@@ -162,25 +161,51 @@
 \DeclareGraphicsExtensions{.eps,.ps,.png,.jpg,.bmp} % 声明使用图像格式
 \newcommand{\highlight}[1]{\colorbox{yellow}{#1}}   % 高亮注释
 
-% 根据不同系统调整
-\ifthenelse{\equal{\@ostype}{win}}{ % win 配置
-  \RequirePackage{times}        % Times New Roman字体
-}{}
-\ifthenelse{\equal{\@ostype}{linux}}{ % linux 配置
-  \RequirePackage{newtxtext}    % Times New Roman字体
-  \RequirePackage{newtxmath}    % 公式的Times New Roman字体 (!After package amsthm!)
-}{}
-\ifthenelse{\equal{\@ostype}{mac}}{ % mac 配置
-  \RequirePackage{times}        % Times New Roman字体
-  \RequirePackage{fontspec}     % 字体设置 (!Only for XeLaTeX!)
-}{}
+\newcommand{\buaa@ifsMastersThesis}[2]{%
+  \ifthenelse{\equal{\@thesis}{master} \OR \equal{\@thesis}{professional}}{#1}{#2}%
+}
+\newcommand{\buaa@ifsDoctorThesis}[2]{%
+  \ifthenelse{\equal{\@thesis}{doctor} \OR \equal{\@thesis}{prodoctor}}{#1}{#2}%
+}
+\newcommand{\buaa@latin}{\rmfamily\upshape}
 
-% 根据不同编译系统选择正确的 Times New Roman字体
-\usepackage{iftex}
-\ifpdftex
-\else
-\setmainfont{Times New Roman}
-\fi
+\newcommand{\buaa@setupLatinFont}{%
+  \ifpdftex
+    \ifthenelse{\equal{\@ostype}{win}}{%
+      \RequirePackage{times}% URW Nimbus Roman (Times 度量)
+    }{}
+    \ifthenelse{\equal{\@ostype}{linux}}{%
+      \RequirePackage{newtxtext}% TeX Gyre Termes (Times 度量)
+      \RequirePackage{newtxmath}% 公式的 Times 度量字体 (!After package amsthm!)
+    }{}
+    \ifthenelse{\equal{\@ostype}{mac}}{%
+      \RequirePackage{times}
+    }{}
+  \else
+    \IfFontExistsTF{Times New Roman}{%
+      \setmainfont{Times New Roman}[%
+        BoldFont = * Bold,
+        ItalicFont = * Italic,
+        BoldItalicFont = * Bold Italic
+      ]%
+    }{%
+      \ClassWarning{buaa}{%
+        Times New Roman not found; using TeX Gyre Termes instead.%
+      }%
+      \setmainfont{TeX Gyre Termes}[%
+        Extension = .otf,
+        UprightFont = *-regular,
+        BoldFont = *-bold,
+        ItalicFont = *-italic,
+        BoldItalicFont = *-bolditalic
+      ]%
+    }%
+  \fi
+}
+
+% 根据不同系统 / 编译引擎选择西文字体
+\RequirePackage{iftex}
+\buaa@setupLatinFont
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 数学环境
@@ -228,9 +253,7 @@
 \newtheorem{example}                {\examplename}     [chapter]
 \newtheorem*{remark}                {\remarkname}
 
-% From MDPI.cls
-%\renewcommand{\qed}{\unskip\nobreak\quad\qedsymbol} %% This places the symbol right after the text instead of placing it at the end on the line.
-\renewenvironment{proof}[1][\proofname]{\par %% \proofname allows to have "Proof of my theorem"
+\renewenvironment{proof}[1][\proofname]{\par
   \pushQED{\qed}%
   \normalfont \topsep6\p@\@plus6\p@\relax
   \trivlist
@@ -300,20 +323,13 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% CTeX调整
-% 半角/缩进/行伸缩设置
 \ctexset{%
   punct=quanjiao, % 全角
   autoindent=2,  % 缩进
   linestretch=2, % 行伸缩
-}
-% 部分标题修改
-\ctexset{%
   contentsname={目~~~~录},
   listfigurename={图~清~单},
   listtablename={表~清~单},
-}
-% 标题样式修改
-\ctexset{%
   chapter={%章标题 : 三号黑体居中 单倍行距 段前/段后0.5行 另起新页
     format=\zihao{3} \heiti \centering \thispagestyle{fancy},
     fixskip=true,
@@ -361,27 +377,17 @@
 \renewcommand{\headrulewidth}{0pt}
 
 % 设置目录格式
+\newcommand{\buaa@tocentry}[4]{%
+  \titlecontents{#1}[#2]{\settowidth{\hangindent}{#3}#4\zihao{-4}}%
+  {#3}{}%
+  {\hspace{.25em}\titlerule*[4pt]{$\cdot$}\contentspage}%
+}
 
-\titlecontents{chapter}[0pt]{\settowidth{\hangindent}{\thecontentslabel}\heiti\zihao{-4}}
-{\thecontentslabel}{}
-{\hspace{.25em}\titlerule*[4pt]{$\cdot$}\contentspage}
-
-\titlecontents{section}[2em]{\settowidth{\hangindent}{\thecontentslabel\ \ }\songti\zihao{-4}}
-{\thecontentslabel\ \ }{}
-{\hspace{.25em}\titlerule*[4pt]{$\cdot$}\contentspage}
-
-\titlecontents{subsection}[3em]{\settowidth{\hangindent}{\thecontentslabel\ \ }\songti\zihao{-4}}
-{\thecontentslabel\ \ }{}
-{\hspace{.25em}\titlerule*[4pt]{$\cdot$}\contentspage}
-
-
-\titlecontents{figure}[0pt]{\settowidth{\hangindent}{图~\thecontentslabel\ \ }\songti\zihao{-4}}
-{图~\thecontentslabel\ \ }{}
-{\hspace{.25em}\titlerule*[4pt]{$\cdot$}\contentspage}
-
-\titlecontents{table}[0pt]{\settowidth{\hangindent}{表~\thecontentslabel\ \ }\songti\zihao{-4}}
-{表~\thecontentslabel\ \ }{}
-{\hspace{.25em}\titlerule*[4pt]{$\cdot$}\contentspage}
+\buaa@tocentry{chapter}{0pt}{\thecontentslabel}{\heiti}
+\buaa@tocentry{section}{2em}{\thecontentslabel\ \ }{\songti}
+\buaa@tocentry{subsection}{3em}{\thecontentslabel\ \ }{\songti}
+\buaa@tocentry{figure}{0pt}{图~\thecontentslabel\ \ }{\songti}
+\buaa@tocentry{table}{0pt}{表~\thecontentslabel\ \ }{\songti}
 
 % 图表环境设置
 \let\org@table\table
@@ -409,18 +415,6 @@
 \captionsetup[table]{
   position=top, margin=0mm, format=tabfigformat,
   aboveskip=0pt, belowskip=0pt, justification=centerlast}
-
-%出现在页面中间的浮动对象与上下方文本之间的垂直距离
-%缺省为 12pt plus 2pt minus 2pt。
-%\setlength{\intextsep}{12pt \@plus2pt \@minus 2pt}
-
-%出现在页面的顶部或底部的浮动对象之间的垂直距离
-%缺省为 12pt plus 2pt minus 2pt
-%\setlength{\floatsep}{12pt \@plus2pt \@minus2pt}
-
-%出现在页面的顶部或底部的浮动对象与文本之间的垂直距离
-% 缺省为 20pt plus 2pt minus 4pt。
-%\setlength{\textfloatsep}{20bp \@plus2pt \@minus4pt}
 
 % 列表间接设置
 \setlist{
@@ -613,15 +607,22 @@
   \renewcommand{\headrulewidth}{0.4pt}
   \fancyfoot[C]{\zihao{5} \thepage}
   \fancyhead[CE]{\zihao{-5} \leftmark}
-  \ifthenelse{\equal{\@thesis}{master} \OR \equal{\@thesis}{professional}}{%
-      \fancyhead[CO]{\zihao{-5} 北京航空航天大学硕士学位论文}}{}
-  \ifthenelse{\equal{\@thesis}{doctor} \OR \equal{\@thesis}{prodoctor}}{%
-      \fancyhead[CO]{\zihao{-5} 北京航空航天大学博士学位论文}}{}
+  \buaa@ifsMastersThesis{%
+    \fancyhead[CO]{\zihao{-5} 北京航空航天大学硕士学位论文}}{%
+  \buaa@ifsDoctorThesis{%
+    \fancyhead[CO]{\zihao{-5} 北京航空航天大学博士学位论文}}{}}
   \setcounter{page}{1}
 }
 
 
 %% 制作封面及声明
+\newcommand{\buaa@includethesishead}{%
+  \ifthenelse{\equal{\@thesis}{master}}{\includegraphics[width=0.9\linewidth]{assets/head-master}}{%
+  \ifthenelse{\equal{\@thesis}{professional}}{\includegraphics[width=0.9\linewidth]{assets/head-professional}}{%
+  \ifthenelse{\equal{\@thesis}{doctor}}{\includegraphics[width=0.9\linewidth]{assets/head-doctor}}{%
+  \ifthenelse{\equal{\@thesis}{prodoctor}}{\includegraphics[width=0.9\linewidth]{assets/head-prodoctor}}{%
+  }}}}%
+}
 \newcommand{\makecovercn}{% 中文封面
 {\pdfbookmark[0]{中文封面}{makecovercn}
 
@@ -642,11 +643,7 @@
   \vspace{-10pt}
   \begin{figure}[h]
     \centering
-    \ifthenelse{\equal{\@thesis}{master}}{\includegraphics[width=0.9\linewidth]{assets/head-master}}{
-    \ifthenelse{\equal{\@thesis}{professional}}{\includegraphics[width=0.9\linewidth]{assets/head-professional}}{
-    \ifthenelse{\equal{\@thesis}{doctor}}{\includegraphics[width=0.9\linewidth]{assets/head-doctor}}{
-    \ifthenelse{\equal{\@thesis}{prodoctor}}{\includegraphics[width=0.9\linewidth]{assets/head-prodoctor}}{
-    }}}}
+    \buaa@includethesishead
   \end{figure}
 
   \centering
@@ -686,7 +683,7 @@
   \begin{spacing}{1.2}
 
     {\begin{spacing}{1.2}
-      \zihao{-2} \bfseries
+      \zihao{-2} \buaa@latin\bfseries
       \ifthenelse{\isundefined{\@subtitleen}}{\vspace{20pt}}{}
       \@titleen
       \ifthenelse{\isundefined{\@subtitleen}}{\vspace{20pt}}{%
@@ -697,14 +694,14 @@
 
     \vspace{50pt}
 
-    {\zihao{4}
+    {\zihao{4}\buaa@latin
       A Dissertation Submitted for the Degree of
-      \ifthenelse{\equal{\@thesis}{master} \OR \equal{\@thesis}{professional}}{Master}{}
-      \ifthenelse{\equal{\@thesis}{doctor} \OR \equal{\@thesis}{prodoctor}}{Doctor of Philosophy}{}
+      \buaa@ifsMastersThesis{Master}{%
+      \buaa@ifsDoctorThesis{Doctor of Philosophy}{}}
     }
 
     \vspace{100pt}
-    {\zihao{-3} \bfseries
+    {\zihao{-3} \buaa@latin\bfseries
       \begin{tabular}{ll}
         \ifthenelse{\isundefined{\@cotutorcn}}{%
           \makebox[70pt][s]{Candidate}:  & \@authoren \\
@@ -723,7 +720,7 @@
   \vspace{150pt}
 
   \begin{spacing}{2.2}
-    {\zihao{-3}
+    {\zihao{-3}\buaa@latin
       \TranDepartment{\@department} \\
       Beihang University, Beijing, China
     }
@@ -745,15 +742,8 @@
 
   \begin{spacing}{1.2}
     {\zihao{-2} \heiti
-        \ifthenelse{\equal{\@thesis}{master}}{%
-         \makebox[11\ccwd][s]{硕士学位论文}}{
-        \ifthenelse{\equal{\@thesis}{professional}}{%
-         \makebox[11\ccwd][s]{硕士学位论文}}{
-        \ifthenelse{\equal{\@thesis}{doctor}}{%
-          \makebox[11\ccwd][s]{博士学位论文}}{
-        \ifthenelse{\equal{\@thesis}{prodoctor}}{%
-          \makebox[11\ccwd][s]{博士学位论文}}{}
-        }}}
+        \buaa@ifsMastersThesis{\makebox[11\ccwd][s]{硕士学位论文}}{%
+        \buaa@ifsDoctorThesis{\makebox[11\ccwd][s]{博士学位论文}}{}}
     }
 
     \vspace{50pt}
@@ -774,8 +764,8 @@
     \begin{tabular}{lrrrlrrr}
       作者姓名     &          \multicolumn{3}{l}{\@authorcn}                   & 申请学位级别        &   \multicolumn{3}{l}{ \hspace{-6pt}
         \@branch \hspace{-0.5\ccwd}
-        \ifthenelse{\equal{\@thesis}{master} \OR \equal{\@thesis}{professional}}{硕士}{
-        \ifthenelse{\equal{\@thesis}{doctor} \OR \equal{\@thesis}{prodoctor}}{博士}{}}
+        \buaa@ifsMastersThesis{硕士}{%
+        \buaa@ifsDoctorThesis{博士}{}}
       }       \\
       指导教师姓名 &          \multicolumn{3}{l}{\@tutorcn}                    & 职\hspace{2\ccwd}称 &                        \multicolumn{3}{l}{\@tutordegree}                      \\
       学科专业     &          \multicolumn{3}{l}{\@major}                      & 研究方向            &                        \multicolumn{3}{l}{\@feild}                            \\
@@ -840,10 +830,9 @@
     }
 
     \clearpage
-    %\ifthenelse{\equal{\@beginright}{off}}{\clearpage}{\clearautopage}
 
-    {\zihao{3} \bfseries  \centerline{Abstract}}
-    {\zihao{-4} ~\par
+    {\zihao{3} \buaa@latin\bfseries\centerline{Abstract}}
+    {\zihao{-4} \buaa@latin~\par
       \@abstrcten \par ~\par
       {\bfseries Keywords:} \@keyworden
     }
@@ -873,51 +862,32 @@
 {\ifthenelse{\isundefined{\@abbreviations}}{}{%
     \pdfbookmark[0]{主要符号表}{denotation}
     \chapter*{主要符号表}
-    %\centering
-    %\begin{tabular}{cl}
       \@abbreviations
-    %\end{tabular}%
     \ifthenelse{\equal{\@beginright}{off}}{\clearpage}{\clearautopage}
   }
 }}
 
-
-\newcommand{\chaptera}[1]{%无章号但编入目录
-  \ctexset{chapter/numbering=false}
-  \chapter{#1}
+\newcommand{\buaa@resetAppendixCounters}{%
   \setcounter{section}{0}%
   \setcounter{subsection}{0}%
   \setcounter{subsubsection}{0}%
-  %
   \gdef\thesection{\@Alph\c@section}%
   \gdef\thesubsection{\@Alph\c@section.\@arabic\c@subsection}%
-  %
-
-  \renewcommand{\thefigure}{A\arabic{figure}}
-  \setcounter{figure}{0}
-  \renewcommand{\thetable}{A\arabic{table}}
-  \setcounter{table}{0}
-  \renewcommand{\theequation}{A\arabic{equation}}
-  \setcounter{equation}{0}
+  \renewcommand{\thefigure}{A\arabic{figure}}%
+  \setcounter{figure}{0}%
+  \renewcommand{\thetable}{A\arabic{table}}%
+  \setcounter{table}{0}%
+  \renewcommand{\theequation}{A\arabic{equation}}%
+  \setcounter{equation}{0}%
 }
-\newcommand{\summary}{%结论
-  \ctexset{chapter/numbering=false}
-  \chapter{结~~~~论}
-  \setcounter{section}{0}%
-  \setcounter{subsection}{0}%
-  \setcounter{subsubsection}{0}%
-  %
-  \gdef\thesection{\@Alph\c@section}%
-  \gdef\thesubsection{\@Alph\c@section.\@arabic\c@subsection}%
-  %
-
-  \renewcommand{\thefigure}{A\arabic{figure}}
-  \setcounter{figure}{0}
-  \renewcommand{\thetable}{A\arabic{table}}
-  \setcounter{table}{0}
-  \renewcommand{\theequation}{A\arabic{equation}}
-  \setcounter{equation}{0}
+\newcommand{\buaa@beginUnnumberedChapter}[1]{%
+  \ctexset{chapter/numbering=false}%
+  \chapter{#1}%
+  \buaa@resetAppendixCounters
 }
+
+\newcommand{\chaptera}[1]{\buaa@beginUnnumberedChapter{#1}}
+\newcommand{\summary}{\buaa@beginUnnumberedChapter{结~~~~论}}
 \newcommand{\Bib}[2]{%参考文献
   \bibliographystyle{#1}
   \clearpage
@@ -925,85 +895,16 @@
   \addcontentsline{toc}{chapter}{参考文献}
   \bibliography{#2}
 }
-\renewcommand{\appendix}{% 附录
-  \ctexset{chapter/numbering=false}
-  \chapter{附~~~~录}
-  \setcounter{section}{0}%
-  \setcounter{subsection}{0}%
-  \setcounter{subsubsection}{0}%
-  %
-  \gdef\thesection{\@Alph\c@section}%
-  \gdef\thesubsection{\@Alph\c@section.\@arabic\c@subsection}%
-  %
-
-  \renewcommand{\thefigure}{A\arabic{figure}}
-  \setcounter{figure}{0}
-  \renewcommand{\thetable}{A\arabic{table}}
-  \setcounter{table}{0}
-  \renewcommand{\theequation}{A\arabic{equation}}
-  \setcounter{equation}{0}
-}
+\renewcommand{\appendix}{\buaa@beginUnnumberedChapter{附~~~~录}}
 \newcommand{\achievement}{%学术成果
-  \ctexset{chapter/numbering=false}
-  \ifthenelse{\equal{\@thesis}{master}}{\chapter{攻读硕士学位期间取得的学术成果}}{
-  \ifthenelse{\equal{\@thesis}{professional}}{\chapter{攻读硕士学位期间取得的学术成果}}{
-  \ifthenelse{\equal{\@thesis}{doctor}}{\chapter{攻读博士学位期间取得的研究成果}}{
-  \ifthenelse{\equal{\@thesis}{prodoctor}}{\chapter{攻读博士学位期间取得的研究成果}}{
-  }}}}
-
-  \setcounter{section}{0}%
-  \setcounter{subsection}{0}%
-  \setcounter{subsubsection}{0}%
-  %
-  \gdef\thesection{\@Alph\c@section}%
-  \gdef\thesubsection{\@Alph\c@section.\@arabic\c@subsection}%
-  %
-
-  \renewcommand{\thefigure}{A\arabic{figure}}
-  \setcounter{figure}{0}
-  \renewcommand{\thetable}{A\arabic{table}}
-  \setcounter{table}{0}
-  \renewcommand{\theequation}{A\arabic{equation}}
-  \setcounter{equation}{0}
+  \ctexset{chapter/numbering=false}%
+  \buaa@ifsMastersThesis{%
+    \chapter{攻读硕士学位期间取得的学术成果}}{%
+    \chapter{攻读博士学位期间取得的研究成果}}%
+  \buaa@resetAppendixCounters
 }
-\newcommand{\acknowledgments}{%致谢
-  \ctexset{chapter/numbering=false}
-  \chapter{致~~~~谢}
-
-  \setcounter{section}{0}%
-  \setcounter{subsection}{0}%
-  \setcounter{subsubsection}{0}%
-  %
-  \gdef\thesection{\@Alph\c@section}%
-  \gdef\thesubsection{\@Alph\c@section.\@arabic\c@subsection}%
-  %
-
-  \renewcommand{\thefigure}{A\arabic{figure}}
-  \setcounter{figure}{0}
-  \renewcommand{\thetable}{A\arabic{table}}
-  \setcounter{table}{0}
-  \renewcommand{\theequation}{A\arabic{equation}}
-  \setcounter{equation}{0}
-}
-\newcommand{\biography}{%作者简介
-  \ctexset{chapter/numbering=false}
-  \chapter{作者简介}
-
-  \setcounter{section}{0}%
-  \setcounter{subsection}{0}%
-  \setcounter{subsubsection}{0}%
-  %
-  \gdef\thesection{\@Alph\c@section}%
-  \gdef\thesubsection{\@Alph\c@section.\@arabic\c@subsection}%
-  %
-
-  \renewcommand{\thefigure}{A\arabic{figure}}
-  \setcounter{figure}{0}
-  \renewcommand{\thetable}{A\arabic{table}}
-  \setcounter{table}{0}
-  \renewcommand{\theequation}{A\arabic{equation}}
-  \setcounter{equation}{0}
-}
+\newcommand{\acknowledgments}{\buaa@beginUnnumberedChapter{致~~~~谢}}
+\newcommand{\biography}{\buaa@beginUnnumberedChapter{作者简介}}
 
 %% --END--
 \endinput
