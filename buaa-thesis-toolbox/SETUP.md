@@ -65,8 +65,8 @@ defining `\songti` / `\heiti`. If setting fonts explicitly, install one per slot
 - `Add Import Format` named `Literature Note`:
   - Output path: `<thesis-root>/literatures/{{citekey}}.md`
   - Annotation image path: `<thesis-root>/literatures/{{citekey}}/`
-  - Template file: your Zotero Integration Nunjucks template (e.g.
-    `<thesis-root>/literatures/_template.njk`).
+  - Template file: `<thesis-root>/zotero_literature_template.md` (bundled Nunjucks
+    template at the thesis root, same level as `buaa.cls`).
 - Citation insertion: Pandoc format, bracketed `[@{{citekey}}]`.
 - Note suggestion: `[[{{citekey}}]]`.
 
@@ -114,7 +114,8 @@ defining `\songti` / `\heiti`. If setting fonts explicitly, install one per slot
 - TikZ: open a note with a `luatikz` block, wait 2–3s, confirm SVG in reading mode.
 - Zotero bridge: Zotero Integration hotkey (e.g. `Cmd+Shift+O`) → search → import
   → confirm a note appears under `literatures/` with title/abstract/annotations.
-- Full build: `cd <thesis-root> && ./scripts/build-thesis.sh` → PDF is produced.
+- Full build: `cd <thesis-root> && ./scripts/build-thesis.sh` → `毕业论文.pdf` is produced by default.
+- Custom output name: `cd <thesis-root> && ./scripts/build-thesis.sh my-thesis.pdf`.
 
 ## Completion criteria
 

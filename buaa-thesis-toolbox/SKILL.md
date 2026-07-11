@@ -15,7 +15,7 @@ citations, headers, and standard back matter (结论 / 参考文献 / 附录 / �
 ## Pipeline
 
 ```
-chapters/*.md ─▶ build-thesis.sh ─▶ Pandoc(+citeproc+Lua filters) ─▶ LaTeX(buaa.cls) ─▶ XeLaTeX ─▶ thesis.pdf
+chapters/*.md ─▶ build-thesis.sh [output.pdf] ─▶ Pandoc(+citeproc+Lua filters) ─▶ LaTeX(buaa.cls) ─▶ XeLaTeX ─▶ chosen output PDF
 ```
 
 | Layer | File | Role |
@@ -34,10 +34,11 @@ Everything needed lives in `template/` next to this file. Do not regenerate
 these from scratch — copy them:
 
 - `template/buaa.cls`, `template/pandoc-thesis.yaml`, `template/*.csl`, `template/references.bib`
+- `template/zotero_literature_template.md` — Zotero Integration import format (Nunjucks)
 - `template/chapters/` — `00-meta.md` + numbered skeleton chapters + back matter
 - `template/scripts/` — `build-thesis.sh`, `tikz.lua`, `full-width-tables.lua`
 - `template/assets/` — `logo-buaa.eps`, `head-{master,doctor,professional,prodoctor}.eps`
-- `template/literatures/` — sample Zotero literature notes
+- `template/literatures/` — sample literature notes (rendered from the Zotero template)
 - `template/README.md` — full end-user reference for the compiled project
 
 ## Scaffold a new thesis
@@ -62,6 +63,9 @@ these from scratch — copy them:
    (`90-结论` `\summary`, `91-参考文献` `\chaptera{参考文献}` + `::: {#refs}`,
    `92-附录` `\appendix`, `93` `\achievement`, `94` `\acknowledgments`).
 5. Point Zotero Better BibTeX auto-export at `<thesis-root>/references.bib`.
+6. In Obsidian Zotero Integration, set the import format template to
+   `<thesis-root>/zotero_literature_template.md` (output:
+   `literatures/{{citekey}}.md`).
 
 ## Compile
 
@@ -69,12 +73,13 @@ Always run from the thesis root so relative paths resolve:
 
 ```bash
 cd "$THESIS_ROOT"
-./scripts/build-thesis.sh          # collects sorted chapters/*.md → 毕业论文.pdf
+./scripts/build-thesis.sh          # defaults to 毕业论文.pdf
+./scripts/build-thesis.sh custom-output.pdf
 ```
 
 The script sorts `chapters/*.md` by filename and passes them to Pandoc with
-`--defaults ./pandoc-thesis.yaml`. Rename the output in `build-thesis.sh` if a
-different filename is wanted.
+`--defaults ./pandoc-thesis.yaml`. Pass the desired output filename as the first
+argument if `毕业论文.pdf` is not wanted.
 
 ## Non-negotiable rules
 

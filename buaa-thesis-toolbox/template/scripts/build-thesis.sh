@@ -3,6 +3,8 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+output_file="${1:-毕业论文.pdf}"
+
 files=()
 while IFS= read -r file; do
   files+=("$file")
@@ -13,4 +15,4 @@ if [ "${#files[@]}" -eq 0 ]; then
   exit 1
 fi
 
-pandoc "${files[@]}" --defaults "./pandoc-thesis.yaml" -o "毕业论文.pdf"
+pandoc "${files[@]}" --defaults "./pandoc-thesis.yaml" -o "$output_file"

@@ -4,27 +4,30 @@ A Markdown-first workflow for writing a Beihang University (BUAA) master's / doc
 thesis in Obsidian and exporting a standards-compliant PDF through Pandoc + XeLaTeX.
 
 You write plain Markdown in Obsidian (with live math, TikZ, and citation previews),
-and a single Pandoc command turns it into a fully formatted thesis PDF — cover pages,
-Chinese fonts, per-page circled footnotes, superscript GB/T 7714 citations, headers,
-and the standard back matter (结论 / 参考文献 / 附录 / 致谢 …).
+and a single Pandoc command turns it into a fully formatted thesis PDF. The default
+report profile is `buaa-thesis`, which produces the BUAA graduate-thesis covers,
+declaration, bilingual abstract, TOC, Chinese fonts, per-page circled footnotes,
+superscript GB/T 7714 citations, headers, and the standard back matter
+(结论 / 参考文献 / 附录 / 致谢 …).
 
 ---
 
 ## 1. How it fits together
 
 ```
-chapters/*.md ──▶ build-thesis.sh ──▶ Pandoc ──▶ LaTeX(buaa.cls) ──▶ XeLaTeX ──▶ thesis.pdf
+chapters/*.md ──▶ build-thesis.sh [output.pdf] ──▶ Pandoc ──▶ LaTeX(buaa.cls) ──▶ XeLaTeX ──▶ chosen output PDF
       │                                           │
-      └─ 00-meta.md + sorted chapter files       buaa.cls formats covers/front matter
+      └─ 00-meta.md + sorted chapter files       buaa/reports/buaa-thesis builds front/back matter
 ```
 
 | Layer | File | Role |
 |-------|------|------|
 | Draft | `chapters/*.md` | Thesis metadata and content split into sorted chapter files |
 | Pandoc defaults | `pandoc-thesis.yaml` | Minimal shared build settings: reader, PDF engine, citeproc, chapter division, filters |
-| Document class | `buaa.cls` | All BUAA formatting: fonts, covers, headers, TOC, captions, back matter |
+| Document class | `buaa.cls` + `buaa/` | Thin class loader plus modular core/report-profile implementation |
 | Citation style | `gb-t-7714-2015-numeric-superscript.csl` | GB/T 7714-2015 numeric superscript |
 | Bibliography | `references.bib` | Auto-exported from Zotero (Better BibTeX) |
+| Zotero note template | `zotero_literature_template.md` | Zotero Integration import format for `literatures/*.md` |
 | TikZ filter | `scripts/tikz.lua` | Turns ` ```luatikz ` / ` ```tikz ` blocks into figures |
 | Table filter | `scripts/full-width-tables.lua` | Auto-sizes table column widths from content |
 
@@ -33,24 +36,37 @@ chapters/*.md ──▶ build-thesis.sh ──▶ Pandoc ──▶ LaTeX(buaa.cl
 ```
 thesis-root/
 ├── README.md                     ← this file
-├── buaa.cls                      ← the thesis class
+├── buaa.cls                      ← thin class loader
+├── buaa/                         ← shared core + report profiles
 ├── pandoc-thesis.yaml            ← Pandoc --defaults file
 ├── references.bib                ← Zotero-exported bibliography
+├── zotero_literature_template.md ← Zotero Integration import format (Nunjucks)
 ├── gb-t-7714-2015-numeric-superscript.csl  ← GB/T 7714-2015 citation style
-├── thesis.md                     ← split-build pointer note
-├── thesis.pdf                    ← compiled thesis
+├── 毕业论文.pdf / custom.pdf      ← compiled thesis; filename comes from scripts/build-thesis.sh
 ├── chapters/
-│   ├── 00-meta.md                ← thesis-specific LaTeX metadata commands
+│   ├── 00-meta.md                ← thesis-specific metadata + class options
 │   ├── 01-引言.md
+│   ├── ...
+│   ├── 90-结论.md
+│   └── 95-作者简介.md
+├── literatures/                  ← Zotero-generated literature notes
+│   ├── smith2020.md
 │   └── ...
-├── literatures/                  ← per-source literature notes
 ├── scripts/
-│   ├── build-thesis.sh            ← sorted multi-file Pandoc build
-│   ├── tikz.lua                   ← TikZ code-block filter
-│   └── full-width-tables.lua      ← table column-width filter
-└── assets/
-    ├── logo-buaa.eps
-    └── head-*.eps
+│   ├── build-thesis.sh           ← sorted multi-file Pandoc build
+│   ├── tikz.lua                  ← TikZ code-block filter
+│   └── full-width-tables.lua     ← table column-width filter
+├── assets/
+│   ├── logo-buaa.eps
+│   ├── head-master.eps
+│   ├── head-doctor.eps
+│   ├── head-professional.eps
+│   └── head-prodoctor.eps
+└── buaa/reports/
+    ├── README.md                 ← profile architecture notes
+    ├── buaa-thesis/              ← default thesis profile
+    ├── coursework/               ← course/lab report profile
+    └── generic/                  ← minimal generic report profile
 ```
 
 ---
@@ -62,10 +78,13 @@ thesis-root/
 ```bash
 cd /path/to/thesis-root
 ./scripts/build-thesis.sh
+# or
+./scripts/build-thesis.sh custom-output.pdf
 ```
 
 The build script collects every `chapters/*.md` file, sorts them by file name, and
-passes them to Pandoc in that order:
+passes them to Pandoc in that order. Its first positional argument overrides the
+output filename; if omitted, it defaults to `毕业论文.pdf`:
 
 ```bash
 pandoc \
@@ -73,13 +92,14 @@ pandoc \
   "chapters/01-引言.md" \
   "chapters/02-文献综述.md" \
   "..." \
-  "chapters/91-参考文献.md" \
+  "chapters/95-作者简介.md" \
   --defaults "./pandoc-thesis.yaml" \
-  -o "thesis.pdf"
+  -o "$output_file"
 ```
 
 That single `--defaults` file already sets the input extensions, `xelatex`, `citeproc`,
-the two Lua filters, and `variables.indent: true` so Pandoc does not load `parskip`.
+chapter division, and the two Lua filters. Thesis-specific metadata such as `indent: true`
+stays in `chapters/00-meta.md`.
 
 > **Always run from the thesis root.** All relative paths (`./assets/…`,
 > `./references.bib`, `./scripts/…`) are resolved from that directory.
@@ -90,12 +110,11 @@ The current thesis is split under `chapters/`:
 
 | File pattern | Role |
 |--------------|------|
-| `00-meta.md` | Thesis-specific `buaa.cls` metadata commands in `header-includes` |
+| `00-meta.md` | Thesis-specific `buaa.cls` metadata, class options, bibliography, and LaTeX commands |
 | `01-*.md` to `89-*.md` | Main thesis chapters, sorted by file name |
-| `90-*.md` and later | Back matter such as 结论, 参考文献, 附录, 致谢 |
+| `90-*.md` and later | Back matter such as 结论, 参考文献, 附录, 学术成果, 致谢, 作者简介 |
 
 Use numeric prefixes with leading zeroes so lexical sort matches thesis order.
-The root `thesis.md` file is now only a human-readable pointer to this split workflow.
 
 ### From Obsidian (Obsidian Pandoc plugin)
 
@@ -137,7 +156,7 @@ filters:
   - scripts/tikz.lua
 ```
 
-Most thesis and export configuration is centralized in `chapters/00-meta.md`:
+Most thesis-specific configuration is centralized in `chapters/00-meta.md`:
 
 ```yaml
 ---
@@ -153,11 +172,18 @@ indent: true
 link-citations: true
 numbersections: true
 header-includes:
-  - \Title{北航硕士学位论文}{LATEX Template of Beihang University Thesis}
-  - \Author{廖亮}{Liao Liang}
+  - \geometry{top=25mm,bottom=25mm,left=25mm,right=25mm,bindingoffset=0mm}
+  - \Abstract{...}{...}
+  - \Title{硕士论文题目示例}{Sample Title for Master's Thesis}
+  - \Author{作者姓名}{Author Name}
+  - \CLC{F270}
   - \Department{经济管理学院}
+  - \Keyword{关键词一，关键词二，关键词三}{Keyword One, Keyword Two, Keyword Three}
   - \Major{工商管理}
-  - \Feild{公司治理}
+  - \Feild{研究方向示例}
+  - \StudentID{ZY0000000}
+  - \Subtitle{副标题示例（可选）}{Sample Subtitle (Optional)}
+  - \Tutor{导师姓名}{Supervisor Name}{教授}
   - ...
 ---
 ```
@@ -168,6 +194,9 @@ Key points:
   `\summary`, `\chaptera{参考文献}`, `\ref{…}`, `\footnote{…}` pass straight through.
 - `fontset=fandol` avoids local macOS CJK font lookup failures while still defining
   the `\songti` and `\heiti` commands used by `buaa.cls`.
+- `classoption:` belongs with the thesis metadata in `00-meta.md`. That is where you
+  choose the report profile (`buaa-thesis`, `coursework`, `generic`) and the thesis
+  options such as `master`, `public`, and `twoside`.
 - `citeproc: true` must stay in `pandoc-thesis.yaml`; when it is placed only in
   `00-meta.md`, Pandoc does not run the citeproc processing stage early enough.
 - `to: pdf`, `pdf-engine: xelatex`, `from`, `top-level-division`, and Lua filters
@@ -199,7 +228,7 @@ body (thanks to `raw_tex`):
 
 | Command | Produces |
 |---------|----------|
-| *(none)* | `buaa.cls` automatically generates cover pages, declaration, abstract, and TOC after `\begin{document}`. Do not write `\BuaaFrontMatter`. |
+| *(none)* | The active report profile automatically generates its front matter after `\begin{document}`. In the default `buaa-thesis` profile, that means cover pages, declaration, abstract, and TOC. |
 | `\summary` | 结论 (unnumbered chapter) |
 | `\chaptera{参考文献}` | 参考文献 heading for Pandoc citeproc output |
 | `\appendix` | 附~~录 (switches figures/tables to A.1, A.2 numbering) |
@@ -220,6 +249,11 @@ The bibliography itself is emitted by citeproc where you place the div:
 ---
 
 ## 4. Thesis metadata reference (`\Command{}`)
+
+The copied template defaults to the `buaa-thesis` report profile. The `buaa` class is
+now modular: shared infrastructure lives under `buaa/core/`, while front matter, header
+logic, metadata checks, and back-matter commands are defined by the active profile under
+`buaa/reports/<name>/`.
 
 ### 4.1 Content commands
 
@@ -244,10 +278,15 @@ The bibliography itself is emitted by citeproc where you place the div:
 
 | Group | Values | Meaning |
 |-------|--------|---------|
+| Report profile | `buaa-thesis` · `coursework` · `generic` | Selects the front matter / back matter bundle; this template uses `buaa-thesis` by default |
 | Degree | `master` · `professional` · `doctor` · `prodoctor` | master's / prof. master's / doctoral / prof. doctoral (affects cover + header text) |
 | Print | `oneside` · `twoside` | single/double-sided layout & headers |
 | Secrecy | `public` · `privacy` · `secret[3/5/10/*]` · `classified[…]` · `topsecret[…]` | secrecy level (密级) label on cover |
 | Fonts | `fontset=fandol` | recommended for stable Pandoc + XeLaTeX export |
+
+For this thesis template, keep `buaa-thesis` unless you are intentionally repurposing
+the class for a different kind of report. See `buaa/reports/README.md` if you want to
+switch profiles or add your own.
 
 ---
 
@@ -345,8 +384,8 @@ Inline `$…$` and display `$$…$$` (via `tex_math_dollars`), typeset with the 
 1. Manage sources in Zotero; export the library as Better BibTeX to `references.bib`
    with **Keep updated** on (see §10, Phase 2).
 2. Cite in Markdown with Pandoc syntax:
-   - single: `[@bilgihan2025]`
-   - multiple: `[@google; @googlea]`
+   - single: `[@smith2020]`
+   - multiple: `[@wang2021; @liu2022]`
 3. citeproc + the GB/T 7714-2015 numeric-superscript CSL render them as superscript
    numbers, and build the list at the `::: {#refs}` div under `\chaptera{参考文献}`.
 
@@ -394,8 +433,9 @@ Only cited entries appear in 参考文献 — that's normal citeproc behavior.
 1. Copy or rename chapter files under `chapters/` using numeric prefixes.
 2. Edit `chapters/00-meta.md` `header-includes` with your real title, author,
    supervisor, abstract, keywords, and dates.
-3. Edit `pandoc-thesis.yaml` only for shared build options such as degree/secrecy
-   `classoption`, bibliography, CSL, filters, or output engine.
+3. Edit `chapters/00-meta.md` for thesis-specific metadata and `classoption:`.
+   Edit `pandoc-thesis.yaml` only for shared build execution settings such as
+   `from`, `pdf-engine`, `citeproc`, `top-level-division`, and Lua filters.
 4. Replace the skeleton chapters (`# 引言(章)` …) with your content; keep the
    `\summary` / `\chaptera{参考文献}` / `\appendix` / `\acknowledgments` back-matter commands.
 5. Cite with `[@citekey]`; keep `references.bib` synced from Zotero.
@@ -403,8 +443,10 @@ Only cited entries appear in 参考文献 — that's normal citeproc behavior.
    ```bash
    cd /path/to/thesis-root
    ./scripts/build-thesis.sh
+   # or
+   ./scripts/build-thesis.sh my-thesis.pdf
    ```
-7. Check the generated PDF.
+7. Check the generated PDF (`毕业论文.pdf` by default, or the filename you passed in).
 
 For full environment setup (Zotero, Better BibTeX, Obsidian plugins, LuaTikZ), see §10.
 
@@ -479,8 +521,8 @@ SVG converters.
 - Name the format `Literature Note`.
 - Set output path to `thesis-root/literatures/{{citekey}}.md`.
 - Set imported annotation image path to `thesis-root/literatures/{{citekey}}/`.
-- Set template file to your Zotero Nunjucks template location (e.g.
-  `thesis-root/literatures/_template.njk`).
+- Set template file to `thesis-root/zotero_literature_template.md` (at the thesis
+  root, same level as `buaa.cls`).
 - Confirm imported notes include title, authors, year, URL, abstract, and annotations.
 - Configure citation insertion as Pandoc citation format, bracketed as `[@{{citekey}}]`.
 - Use `[[{{citekey}}]]` as the note suggestion template.
