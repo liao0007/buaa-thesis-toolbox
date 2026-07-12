@@ -23,7 +23,7 @@ Demo template files (replace when writing for real):
 |------|----------------|
 | `00-meta.md` | Sample professional / MBA metadata + TikZ packages |
 | `01-导读与配置.md` | Full option / field reference |
-| `02-语法示例.md` | Citations, footnotes, tables, TikZ, math, algorithms |
+| `02-语法示例.md` | Citations, footnotes, tables, TikZ, Markdown figures, math, algorithms |
 | `90`–`95` | Stubs for each back-matter command |
 
 `build.sh` does not hard-code chapter names: any `chapters/*.md` is included.
@@ -198,14 +198,25 @@ via `buaa/font/setup.tex`, but Obsidian's LuaTikZ preview uses
 `standalone + luatexja-fontspec` (no ctex), where `\songti` is undefined.
 `\rmfamily` works in both environments.
 
-## Figures — raster
+## Figures — Markdown (raster / bitmap)
+
+Prefer Pandoc image syntax over hand-written `\includegraphics` floats. Put
+files under thesis-root `assets/` (paths relative to the thesis root, not
+`chapters/`).
 
 ```markdown
-![figure caption example](../buaa/assets/example.png)
+![Caption](assets/file.jpg){#fig:id width=90%}
 ```
 
-Prefer local files under `buaa/assets/` and reference them from chapter files as
-`../buaa/assets/...`. Remote URLs may fail under XeLaTeX — download first.
+- Alt text becomes the figure caption; `{#fig:id}` becomes `\label{fig:id}`.
+- Optional attributes: `width=90%`, `height=…`.
+- Cross-ref with `\ref{fig:id}` — **not** `@fig:…` (collides with citeproc).
+- Demo: `template/assets/mac.jpg` → `![…](assets/mac.jpg){#fig:mac-demo …}` in
+  `02-语法示例.md`.
+
+Remote URLs may fail under XeLaTeX — download into `assets/` first. Cover logo
+(`buaa/assets/logo-buaa.eps`) stays under `buaa/assets/` for the class; body
+figures belong in thesis-root `assets/`.
 
 For subfigures, use the loaded `subcaption` package (`\subcaptionbox` or the
 `subfigure` environment). Do not load the obsolete `subfigure` package.
@@ -289,5 +300,5 @@ The script:
 | `Can be used only in preamble` | font setup called too late | Don't move font setup to `begindocument/end` |
 | `You have requested document class '../buaa'…` | `../` path vs internal name | Harmless warning; ignore |
 | `Label 'ref-…' multiply defined` | same source labeled twice by citeproc | Harmless; or de-duplicate citation |
-| Remote image fails | XeLaTeX can't fetch URLs | Download to `buaa/assets/`, use local path |
+| Remote image fails | XeLaTeX can't fetch URLs | Download to thesis-root `assets/`, use `![…](assets/…){#fig:id}` |
 | Wrong profile front matter | Missing / wrong class option | Set `thesis` / `coursework` / `generic` in `00-meta.md` |

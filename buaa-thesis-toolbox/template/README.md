@@ -115,6 +115,8 @@ thesis-root/
 │   ├── 93-学术成果.md          ← \achievement
 │   ├── 94-致谢.md              ← \acknowledgments
 │   └── 95-作者简介.md          ← \biography
+├── assets/                     ← thesis figures (png/jpg/…)
+│   └── mac.jpg                 ← demo bitmap used in 02-语法示例.md
 ├── literatures/
 │   ├── zotero_literature_template.md
 │   └── <citekey>.md            ← example notes
@@ -259,10 +261,6 @@ Table: Caption {#tab:id}
 
 ### TikZ figures
 
-Obsidian LuaTikZ previews **only** `tikzpicture`. Do **not** wrap
-`\begin{figure}` / `\caption` / `\label` inside the fence (preview stays blank).
-Put PDF caption/label as comments; `tikz.lua` builds the float at compile time.
-
 ````markdown
 ```luatikz
 % caption: Title
@@ -273,7 +271,15 @@ Put PDF caption/label as comments; `tikz.lua` builds the float at compile time.
 ```
 ````
 
-Reference with `\ref{fig:id}` (not `@fig:…`).
+`tikz.lua` wraps captioned blocks in `figure`. Reference with `\ref{fig:id}` (not `@fig:…`).
+
+### Markdown figures
+
+```markdown
+![Caption](assets/file.jpg){#fig:id width=90%}
+```
+
+Images live under `assets/` (paths relative to thesis root). Cross-ref: `\ref{fig:id}`.
 
 ### Math & algorithms
 
@@ -298,7 +304,7 @@ Math font: Cambria Math when present under `buaa/font/`.
 |---------|-----|
 | Duplicate bibliography entries | citeproc enabled twice — keep only the filter in `pandoc.yaml` |
 | Extra blank pages | Use `library` instead of `print` |
-| TikZ won’t preview in Obsidian | Plain `` ```luatikz `` with **only** `tikzpicture`; use `% caption:` / `% label:` — never `\begin{figure}` / `\caption` / `\label` inside the fence |
+| TikZ won’t preview in Obsidian | Plain `` ```luatikz ``; put `% caption:` / `% label:` inside the block |
 | Missing Chinese glyphs | Keep `buaa/font/` files; use `fontset=none` |
 | `\geometry` seems ignored | Intended — margins are locked by the class |
 | Long table page 2 lacks 「（续）」 | Ensure `longtable-continued.lua` is in `pandoc.yaml` |

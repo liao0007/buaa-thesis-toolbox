@@ -49,6 +49,7 @@ chapters/*.md ─▶ ./buaa/scripts/build.sh [output.pdf]
 | Build | `buaa/scripts/build.sh` | Collect `chapters/*.md` → Pandoc |
 | Fonts | `buaa/font/` + `setup.tex` | simsun/simhei/simkai/simfang, Xingkai, Times, Cambria Math |
 | Cover asset | `buaa/assets/logo-buaa.eps` | University calligraphy |
+| Body figures | `assets/` (thesis root) | Markdown `![…](assets/…){#fig:id}` bitmaps |
 | Demo PDFs | `输出示例.pdf`, `官方示例.pdf` | Markdown build sample + official reference |
 
 ## Bundled templates
@@ -68,6 +69,7 @@ chmod +x "$THESIS_ROOT/buaa/scripts/build.sh"
 Contents:
 
 - `template/buaa/` — `buaa.cls`, `pandoc.yaml`, CSL, `core/`, `reports/`, `font/`, `i18n/`, `assets/`, `scripts/`
+- `template/assets/` — demo body figures (e.g. `mac.jpg` for Markdown image syntax)
 - `template/chapters/` — `00-meta.md` + demo body + back matter `90`–`95`
 - `template/literatures/` — Zotero import Nunjucks template + sample notes
 - `template/references.bib`, `template/README.md`
@@ -173,6 +175,9 @@ Report profile details: `template/buaa/reports/README.md` (copied into every pro
   (`STEM`/`HSS`), and report profile (`thesis`/`coursework`/`generic`).
 - Page geometry is **fixed** in `buaa/core/layout.tex`; later `\geometry{…}` is ignored.
 - Figures and tables are numbered by chapter; use `subcaption` for subfigures.
+- **Body bitmaps:** `![Caption](assets/file.jpg){#fig:id width=90%}` under
+  thesis-root `assets/`; cross-ref with `\ref{fig:id}` (not `@fig:…`). Details:
+  [AUTHORING.md](AUTHORING.md) §Figures — Markdown.
 - **Obsidian TikZ = plain `luatikz` + `tikzpicture` only.** Do **not** wrap
   `\begin{figure}` / `\caption` / `\label` inside the fence — LuaTikZ will not
   preview. Put PDF metadata as top-of-block comments `% caption:` / `% label:`;
@@ -186,7 +191,8 @@ Report profile details: `template/buaa/reports/README.md` (copied into every pro
 - **Setting up the toolchain** (Zotero, Better BibTeX, Obsidian plugins via
   `template-obsidian/`, LuaTikZ, LaTeX, Pandoc, fonts) → [SETUP.md](SETUP.md).
 - **Writing content** (chapters, `\Command{}` reference, class options, profiles,
-  TikZ, tables, math, citations) or **fixing build errors** → [AUTHORING.md](AUTHORING.md).
+  TikZ, Markdown figures, tables, math, citations) or **fixing build errors** →
+  [AUTHORING.md](AUTHORING.md).
 - **Typography compliance** (official 字号/字体 spec, `layout.tex` / cover fonts,
   TikZ/table font rules, PDF font audit) → [TYPOGRAPHY-REFERENCE.md](TYPOGRAPHY-REFERENCE.md).
 - **Handing the project to the author** → the copied `README.md` is their manual.

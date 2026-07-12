@@ -15,7 +15,7 @@ indent: true
 link-citations: true
 numbersections: true
 header-includes:
-  - \Abstract{本文是北京航空航天大学硕博士学位论文 Markdown + Pandoc + buaa 模板的最小演示文稿。文中说明 00-meta.md 的配置项，并示例引用、脚注、Markdown 表格、TikZ 插图、数学公式、算法环境及附录等后置命令的写法，供使用者对照改写。正文不展开真实研究问题与案例结论。}{This document is a minimal demo of the Beihang University thesis Markdown + Pandoc + buaa template. It documents 00-meta.md settings and shows sample syntax for citations, footnotes, Markdown tables, TikZ figures, mathematics, algorithms, and back-matter commands. It does not present a full research study.}
+  - \Abstract{本文是北京航空航天大学硕博士学位论文 Markdown + Pandoc + buaa 模板的最小演示文稿。文中说明 00-meta.md 的配置项，并示例引用、脚注、Markdown 表格、TikZ 与 Markdown 插图、数学公式、算法环境及附录等后置命令的写法，供使用者对照改写。正文不展开真实研究问题与案例结论。}{This document is a minimal demo of the Beihang University thesis Markdown + Pandoc + buaa template. It documents 00-meta.md settings and shows sample syntax for citations, footnotes, Markdown tables, TikZ and Markdown figures, mathematics, algorithms, and back-matter commands. It does not present a full research study.}
   - \Author{梁同学}{Liang Tongxue}
   - \CLC{TP391}
   - \DateEnroll{9}{1}{2025}
